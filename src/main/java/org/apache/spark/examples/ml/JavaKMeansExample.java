@@ -18,6 +18,7 @@
 package org.apache.spark.examples.ml;
 
 // $example on$
+
 import org.apache.spark.ml.clustering.KMeansModel;
 import org.apache.spark.ml.clustering.KMeans;
 import org.apache.spark.ml.evaluation.ClusteringEvaluator;
@@ -37,38 +38,38 @@ import org.apache.spark.sql.SparkSession;
  */
 public class JavaKMeansExample {
 
-  public static void main(String[] args) {
-    // Create a SparkSession.
-    SparkSession spark = SparkSession
-      .builder()
-      .appName("JavaKMeansExample")
-      .getOrCreate();
+    public static void main(String[] args) {
+        // Create a SparkSession.
+        SparkSession spark = SparkSession
+                .builder()
+                .appName("JavaKMeansExample")
+                .getOrCreate();
 
-    // $example on$
-    // Loads data.
-    Dataset<Row> dataset = spark.read().format("libsvm").load("data/mllib/sample_kmeans_data.txt");
+        // $example on$
+        // Loads data.
+        Dataset<Row> dataset = spark.read().format("libsvm").load("data/mllib/sample_kmeans_data.txt");
 
-    // Trains a k-means model.
-    KMeans kmeans = new KMeans().setK(2).setSeed(1L);
-    KMeansModel model = kmeans.fit(dataset);
+        // Trains a k-means model.
+        KMeans kmeans = new KMeans().setK(2).setSeed(1L);
+        KMeansModel model = kmeans.fit(dataset);
 
-    // Make predictions
-    Dataset<Row> predictions = model.transform(dataset);
+        // Make predictions
+        Dataset<Row> predictions = model.transform(dataset);
 
-    // Evaluate clustering by computing Silhouette score
-    ClusteringEvaluator evaluator = new ClusteringEvaluator();
+        // Evaluate clustering by computing Silhouette score
+        ClusteringEvaluator evaluator = new ClusteringEvaluator();
 
-    double silhouette = evaluator.evaluate(predictions);
-    System.out.println("Silhouette with squared euclidean distance = " + silhouette);
+        double silhouette = evaluator.evaluate(predictions);
+        System.out.println("Silhouette with squared euclidean distance = " + silhouette);
 
-    // Shows the result.
-    Vector[] centers = model.clusterCenters();
-    System.out.println("Cluster Centers: ");
-    for (Vector center: centers) {
-      System.out.println(center);
+        // Shows the result.
+        Vector[] centers = model.clusterCenters();
+        System.out.println("Cluster Centers: ");
+        for (Vector center : centers) {
+            System.out.println(center);
+        }
+        // $example off$
+
+        spark.stop();
     }
-    // $example off$
-
-    spark.stop();
-  }
 }

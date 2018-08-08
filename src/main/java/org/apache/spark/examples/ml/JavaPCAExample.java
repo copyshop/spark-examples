@@ -36,35 +36,35 @@ import org.apache.spark.sql.types.StructType;
 // $example off$
 
 public class JavaPCAExample {
-  public static void main(String[] args) {
-    SparkSession spark = SparkSession
-      .builder()
-      .appName("JavaPCAExample")
-      .getOrCreate();
+    public static void main(String[] args) {
+        SparkSession spark = SparkSession
+                .builder()
+                .appName("JavaPCAExample")
+                .getOrCreate();
 
-    // $example on$
-    List<Row> data = Arrays.asList(
-      RowFactory.create(Vectors.sparse(5, new int[]{1, 3}, new double[]{1.0, 7.0})),
-      RowFactory.create(Vectors.dense(2.0, 0.0, 3.0, 4.0, 5.0)),
-      RowFactory.create(Vectors.dense(4.0, 0.0, 0.0, 6.0, 7.0))
-    );
+        // $example on$
+        List<Row> data = Arrays.asList(
+                RowFactory.create(Vectors.sparse(5, new int[] {1, 3}, new double[] {1.0, 7.0})),
+                RowFactory.create(Vectors.dense(2.0, 0.0, 3.0, 4.0, 5.0)),
+                RowFactory.create(Vectors.dense(4.0, 0.0, 0.0, 6.0, 7.0))
+        );
 
-    StructType schema = new StructType(new StructField[]{
-      new StructField("features", new VectorUDT(), false, Metadata.empty()),
-    });
+        StructType schema = new StructType(new StructField[] {
+                new StructField("features", new VectorUDT(), false, Metadata.empty()),
+        });
 
-    Dataset<Row> df = spark.createDataFrame(data, schema);
+        Dataset<Row> df = spark.createDataFrame(data, schema);
 
-    PCAModel pca = new PCA()
-      .setInputCol("features")
-      .setOutputCol("pcaFeatures")
-      .setK(3)
-      .fit(df);
+        PCAModel pca = new PCA()
+                .setInputCol("features")
+                .setOutputCol("pcaFeatures")
+                .setK(3)
+                .fit(df);
 
-    Dataset<Row> result = pca.transform(df).select("pcaFeatures");
-    result.show(false);
-    // $example off$
-    spark.stop();
-  }
+        Dataset<Row> result = pca.transform(df).select("pcaFeatures");
+        result.show(false);
+        // $example off$
+        spark.stop();
+    }
 }
 

@@ -53,8 +53,7 @@ public final class JavaTC {
         return new ArrayList<>(edges);
     }
 
-    static class ProjectFn implements PairFunction<Tuple2<Integer, Tuple2<Integer, Integer>>,
-            Integer, Integer> {
+    static class ProjectFn implements PairFunction<Tuple2<Integer, Tuple2<Integer, Integer>>, Integer, Integer> {
         static final ProjectFn INSTANCE = new ProjectFn();
 
         @Override
@@ -64,13 +63,8 @@ public final class JavaTC {
     }
 
     public static void main(String[] args) {
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("JavaTC")
-                .getOrCreate();
-
+        SparkSession spark = SparkSession.builder().appName("JavaTC").getOrCreate();
         JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
-
         Integer slices = (args.length > 0) ? Integer.parseInt(args[0]) : 2;
         JavaPairRDD<Integer, Integer> tc = jsc.parallelizePairs(generateGraph(), slices).cache();
 

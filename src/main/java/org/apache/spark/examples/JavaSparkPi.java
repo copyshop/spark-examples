@@ -37,12 +37,12 @@ public final class JavaSparkPi {
         JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
         int slices = (args.length == 1) ? Integer.parseInt(args[0]) : 2;
         int n = 100000 * slices;
-        List<Integer> l = new ArrayList<>(n);
+        List<Integer> intList = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            l.add(i);
+            intList.add(i);
         }
 
-        JavaRDD<Integer> dataSet = jsc.parallelize(l, slices);
+        JavaRDD<Integer> dataSet = jsc.parallelize(intList, slices);
 
         int count = dataSet.map(integer -> {
             double x = Math.random() * 2 - 1;

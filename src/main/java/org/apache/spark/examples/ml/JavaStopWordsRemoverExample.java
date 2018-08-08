@@ -35,30 +35,30 @@ import org.apache.spark.sql.types.StructType;
 
 public class JavaStopWordsRemoverExample {
 
-  public static void main(String[] args) {
-    SparkSession spark = SparkSession
-      .builder()
-      .appName("JavaStopWordsRemoverExample")
-      .getOrCreate();
+    public static void main(String[] args) {
+        SparkSession spark = SparkSession
+                .builder()
+                .appName("JavaStopWordsRemoverExample")
+                .getOrCreate();
 
-    // $example on$
-    StopWordsRemover remover = new StopWordsRemover()
-      .setInputCol("raw")
-      .setOutputCol("filtered");
+        // $example on$
+        StopWordsRemover remover = new StopWordsRemover()
+                .setInputCol("raw")
+                .setOutputCol("filtered");
 
-    List<Row> data = Arrays.asList(
-      RowFactory.create(Arrays.asList("I", "saw", "the", "red", "balloon")),
-      RowFactory.create(Arrays.asList("Mary", "had", "a", "little", "lamb"))
-    );
+        List<Row> data = Arrays.asList(
+                RowFactory.create(Arrays.asList("I", "saw", "the", "red", "balloon")),
+                RowFactory.create(Arrays.asList("Mary", "had", "a", "little", "lamb"))
+        );
 
-    StructType schema = new StructType(new StructField[]{
-      new StructField(
-        "raw", DataTypes.createArrayType(DataTypes.StringType), false, Metadata.empty())
-    });
+        StructType schema = new StructType(new StructField[] {
+                new StructField(
+                        "raw", DataTypes.createArrayType(DataTypes.StringType), false, Metadata.empty())
+        });
 
-    Dataset<Row> dataset = spark.createDataFrame(data, schema);
-    remover.transform(dataset).show(false);
-    // $example off$
-    spark.stop();
-  }
+        Dataset<Row> dataset = spark.createDataFrame(data, schema);
+        remover.transform(dataset).show(false);
+        // $example off$
+        spark.stop();
+    }
 }

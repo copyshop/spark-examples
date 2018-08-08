@@ -18,6 +18,7 @@
 package org.apache.spark.examples.ml;
 
 // $example on$
+
 import org.apache.spark.ml.classification.LogisticRegression;
 import org.apache.spark.ml.classification.LogisticRegressionModel;
 import org.apache.spark.ml.classification.LogisticRegressionTrainingSummary;
@@ -48,7 +49,7 @@ public class JavaMulticlassLogisticRegressionWithElasticNetExample {
 
         // Print the coefficients and intercept for multinomial logistic regression
         System.out.println("Coefficients: \n"
-                + lrModel.coefficientMatrix() + " \nIntercept: " + lrModel.interceptVector());
+                                   + lrModel.coefficientMatrix() + " \nIntercept: " + lrModel.interceptVector());
         LogisticRegressionTrainingSummary trainingSummary = lrModel.summary();
 
         // Obtain the loss per iteration.

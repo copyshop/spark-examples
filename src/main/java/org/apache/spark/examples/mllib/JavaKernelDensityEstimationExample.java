@@ -27,27 +27,27 @@ import org.apache.spark.mllib.stat.KernelDensity;
 // $example off$
 
 public class JavaKernelDensityEstimationExample {
-  public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    SparkConf conf = new SparkConf().setAppName("JavaKernelDensityEstimationExample");
-    JavaSparkContext jsc = new JavaSparkContext(conf);
+        SparkConf conf = new SparkConf().setAppName("JavaKernelDensityEstimationExample");
+        JavaSparkContext jsc = new JavaSparkContext(conf);
 
-    // $example on$
-    // an RDD of sample data
-    JavaRDD<Double> data = jsc.parallelize(
-      Arrays.asList(1.0, 1.0, 1.0, 2.0, 3.0, 4.0, 5.0, 5.0, 6.0, 7.0, 8.0, 9.0, 9.0));
+        // $example on$
+        // an RDD of sample data
+        JavaRDD<Double> data = jsc.parallelize(
+                Arrays.asList(1.0, 1.0, 1.0, 2.0, 3.0, 4.0, 5.0, 5.0, 6.0, 7.0, 8.0, 9.0, 9.0));
 
-    // Construct the density estimator with the sample data
-    // and a standard deviation for the Gaussian kernels
-    KernelDensity kd = new KernelDensity().setSample(data).setBandwidth(3.0);
+        // Construct the density estimator with the sample data
+        // and a standard deviation for the Gaussian kernels
+        KernelDensity kd = new KernelDensity().setSample(data).setBandwidth(3.0);
 
-    // Find density estimates for the given values
-    double[] densities = kd.estimate(new double[]{-1.0, 2.0, 5.0});
+        // Find density estimates for the given values
+        double[] densities = kd.estimate(new double[] {-1.0, 2.0, 5.0});
 
-    System.out.println(Arrays.toString(densities));
-    // $example off$
+        System.out.println(Arrays.toString(densities));
+        // $example off$
 
-    jsc.stop();
-  }
+        jsc.stop();
+    }
 }
 

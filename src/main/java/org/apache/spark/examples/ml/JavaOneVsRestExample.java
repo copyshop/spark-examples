@@ -18,6 +18,7 @@
 package org.apache.spark.examples.ml;
 
 // $example on$
+
 import org.apache.spark.ml.classification.LogisticRegression;
 import org.apache.spark.ml.classification.OneVsRest;
 import org.apache.spark.ml.classification.OneVsRestModel;
@@ -37,48 +38,48 @@ import org.apache.spark.sql.SparkSession;
  * </pre>
  */
 public class JavaOneVsRestExample {
-  public static void main(String[] args) {
-    SparkSession spark = SparkSession
-      .builder()
-      .appName("JavaOneVsRestExample")
-      .getOrCreate();
+    public static void main(String[] args) {
+        SparkSession spark = SparkSession
+                .builder()
+                .appName("JavaOneVsRestExample")
+                .getOrCreate();
 
-    // $example on$
-    // load data file.
-    Dataset<Row> inputData = spark.read().format("libsvm")
-      .load("data/mllib/sample_multiclass_classification_data.txt");
+        // $example on$
+        // load data file.
+        Dataset<Row> inputData = spark.read().format("libsvm")
+                .load("data/mllib/sample_multiclass_classification_data.txt");
 
-    // generate the train/test split.
-    Dataset<Row>[] tmp = inputData.randomSplit(new double[]{0.8, 0.2});
-    Dataset<Row> train = tmp[0];
-    Dataset<Row> test = tmp[1];
+        // generate the train/test split.
+        Dataset<Row>[] tmp = inputData.randomSplit(new double[] {0.8, 0.2});
+        Dataset<Row> train = tmp[0];
+        Dataset<Row> test = tmp[1];
 
-    // configure the base classifier.
-    LogisticRegression classifier = new LogisticRegression()
-      .setMaxIter(10)
-      .setTol(1E-6)
-      .setFitIntercept(true);
+        // configure the base classifier.
+        LogisticRegression classifier = new LogisticRegression()
+                .setMaxIter(10)
+                .setTol(1E-6)
+                .setFitIntercept(true);
 
-    // instantiate the One Vs Rest Classifier.
-    OneVsRest ovr = new OneVsRest().setClassifier(classifier);
+        // instantiate the One Vs Rest Classifier.
+        OneVsRest ovr = new OneVsRest().setClassifier(classifier);
 
-    // train the multiclass model.
-    OneVsRestModel ovrModel = ovr.fit(train);
+        // train the multiclass model.
+        OneVsRestModel ovrModel = ovr.fit(train);
 
-    // score the model on test data.
-    Dataset<Row> predictions = ovrModel.transform(test)
-      .select("prediction", "label");
+        // score the model on test data.
+        Dataset<Row> predictions = ovrModel.transform(test)
+                .select("prediction", "label");
 
-    // obtain evaluator.
-    MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
-            .setMetricName("accuracy");
+        // obtain evaluator.
+        MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
+                .setMetricName("accuracy");
 
-    // compute the classification error on test data.
-    double accuracy = evaluator.evaluate(predictions);
-    System.out.println("Test Error = " + (1 - accuracy));
-    // $example off$
+        // compute the classification error on test data.
+        double accuracy = evaluator.evaluate(predictions);
+        System.out.println("Test Error = " + (1 - accuracy));
+        // $example off$
 
-    spark.stop();
-  }
+        spark.stop();
+    }
 
 }

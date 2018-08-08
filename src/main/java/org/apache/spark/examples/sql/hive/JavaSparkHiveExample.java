@@ -59,12 +59,7 @@ public class JavaSparkHiveExample {
         // $example on:spark_hive$
         // warehouseLocation points to the default location for managed databases and tables
         String warehouseLocation = new File("spark-warehouse").getAbsolutePath();
-        SparkSession spark = SparkSession
-                .builder()
-                .appName("Java Spark Hive Example")
-                .config("spark.sql.warehouse.dir", warehouseLocation)
-                .enableHiveSupport()
-                .getOrCreate();
+        SparkSession spark = SparkSession.builder().appName("Java Spark Hive Example").config("spark.sql.warehouse.dir", warehouseLocation).enableHiveSupport().getOrCreate();
 
         spark.sql("CREATE TABLE IF NOT EXISTS src (key INT, value STRING) USING hive");
         spark.sql("LOAD DATA LOCAL INPATH 'examples/src/main/resources/kv1.txt' INTO TABLE src");
@@ -92,8 +87,8 @@ public class JavaSparkHiveExample {
 
         // The items in DataFrames are of type Row, which lets you to access each column by ordinal.
         Dataset<String> stringsDS = sqlDF.map(
-                (MapFunction<Row, String>) row -> "Key: " + row.get(0) + ", Value: " + row.get(1),
-                Encoders.STRING());
+                (MapFunction<Row, String>) row -> "Key: " + row.get(0) + ", Value: " + row.get(1), Encoders.STRING()
+        );
         stringsDS.show();
         // +--------------------+
         // |               value|

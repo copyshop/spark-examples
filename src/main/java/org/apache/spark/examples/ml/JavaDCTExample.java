@@ -35,34 +35,34 @@ import org.apache.spark.sql.types.StructType;
 // $example off$
 
 public class JavaDCTExample {
-  public static void main(String[] args) {
-    SparkSession spark = SparkSession
-      .builder()
-      .appName("JavaDCTExample")
-      .getOrCreate();
+    public static void main(String[] args) {
+        SparkSession spark = SparkSession
+                .builder()
+                .appName("JavaDCTExample")
+                .getOrCreate();
 
-    // $example on$
-    List<Row> data = Arrays.asList(
-      RowFactory.create(Vectors.dense(0.0, 1.0, -2.0, 3.0)),
-      RowFactory.create(Vectors.dense(-1.0, 2.0, 4.0, -7.0)),
-      RowFactory.create(Vectors.dense(14.0, -2.0, -5.0, 1.0))
-    );
-    StructType schema = new StructType(new StructField[]{
-      new StructField("features", new VectorUDT(), false, Metadata.empty()),
-    });
-    Dataset<Row> df = spark.createDataFrame(data, schema);
+        // $example on$
+        List<Row> data = Arrays.asList(
+                RowFactory.create(Vectors.dense(0.0, 1.0, -2.0, 3.0)),
+                RowFactory.create(Vectors.dense(-1.0, 2.0, 4.0, -7.0)),
+                RowFactory.create(Vectors.dense(14.0, -2.0, -5.0, 1.0))
+        );
+        StructType schema = new StructType(new StructField[] {
+                new StructField("features", new VectorUDT(), false, Metadata.empty()),
+        });
+        Dataset<Row> df = spark.createDataFrame(data, schema);
 
-    DCT dct = new DCT()
-      .setInputCol("features")
-      .setOutputCol("featuresDCT")
-      .setInverse(false);
+        DCT dct = new DCT()
+                .setInputCol("features")
+                .setOutputCol("featuresDCT")
+                .setInverse(false);
 
-    Dataset<Row> dctDf = dct.transform(df);
+        Dataset<Row> dctDf = dct.transform(df);
 
-    dctDf.select("featuresDCT").show(false);
-    // $example off$
+        dctDf.select("featuresDCT").show(false);
+        // $example off$
 
-    spark.stop();
-  }
+        spark.stop();
+    }
 }
 
